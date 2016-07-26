@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import dao.FigureDAO;
 import models.Figure;
+import models.Figure1;
 
 @Repository
 public class FigureDAOImpl implements FigureDAO
@@ -24,13 +25,30 @@ public class FigureDAOImpl implements FigureDAO
 
     
     
-    public void addFigure(Figure f)
+    public Integer addFigure(String name, int price)
     {
-//        Session session = sessionFactory.openSession();
-//        Transaction tr = session.beginTransaction();
-//        session.per
-//        
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        Integer figureId = null;
         
+        try
+        {
+            tx = session.beginTransaction();
+            Figure1 figure = new Figure1(name, price);
+            figureId = (Integer) session.save(figure);
+            tx.commit();
+        }
+        catch (HibernateException he)
+        {
+            if (tx != null) tx.rollback();
+            he.printStackTrace();
+        }
+        finally
+        {
+            session.close();
+        }
+        
+        return figureId;
     }
     
     

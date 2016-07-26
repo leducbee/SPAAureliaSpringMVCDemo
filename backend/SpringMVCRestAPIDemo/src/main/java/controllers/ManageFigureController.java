@@ -8,6 +8,7 @@ import javax.enterprise.inject.Produces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,16 @@ public class ManageFigureController
     {
         this.figureService = fs;
     }
+    
+    
+    @RequestMapping(value="/figure/add/{name}/{price}", method=RequestMethod.POST)
+    public String addFigure(@PathVariable("name") String name, @PathVariable("price") int price)
+    {
+        Integer figureNewID = figureService.addFigure(name, price);
+        return "redirect:/figures";
+    }
+    
+    
     
     @RequestMapping(value = "/figures", method = RequestMethod.GET)
 //    @Produces("application/json")

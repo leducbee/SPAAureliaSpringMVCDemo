@@ -30,9 +30,11 @@ public class ManageFigure
         
         ManageFigure MF = new ManageFigure();
         
-        MF.listAllFigure();
+        
         //add imployee
-//       Integer figureId1 = MF.addFigure("suki", 32);
+       Integer figureId1 = MF.addFigure("siki", 11);
+       
+       MF.listAllFigure();
 
 //test connection         
 //        factory = new Configuration().configure().buildSessionFactory();
@@ -47,7 +49,6 @@ public class ManageFigure
     public Integer addFigure(String name, int price)
     {
         Session session = factory.openSession();
-        System.out.println("session = " + session);
         Transaction tx = null;
         Integer figureId = null;
         

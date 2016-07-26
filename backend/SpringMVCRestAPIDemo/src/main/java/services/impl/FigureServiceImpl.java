@@ -17,6 +17,13 @@ public class FigureServiceImpl implements FigureService
         this.figureDAO = figureDAO;
     }
     
+    
+    public Integer addFigure(String name, int price)
+    {
+        return this.figureDAO.addFigure(name, price);
+    }
+    
+    
     /*
      * implement figure service: list all figure object in database
      * 

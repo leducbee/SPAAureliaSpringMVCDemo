@@ -6,7 +6,7 @@ import models.Figure;
 
 public interface FigureDAO
 {
-    public void addFigure(Figure f);
+    public Integer addFigure(String name, int price);
 //    public void updateFigure(Figure f);
     public List<Figure> listFigure();
 //    public Figure getFigureById(int id);
