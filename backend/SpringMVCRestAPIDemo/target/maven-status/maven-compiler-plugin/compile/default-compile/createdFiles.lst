@@ -1,0 +1,9 @@
+dao\impl\FigureDAOImpl.class
+services\impl\FigureServiceImpl.class
+models\Figure1.class
+dao\FigureDAO.class
+com\SpringMVCRestAPIDemo\ManageFigure.class
+models\Figure.class
+services\FigureService.class
+com\SpringMVCRestAPIDemo\App.class
+controllers\ManageFigureController.class
