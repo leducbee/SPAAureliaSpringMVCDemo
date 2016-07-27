@@ -24,33 +24,41 @@ public class FigureDAOImpl implements FigureDAO
     }
 
     
-    
-    public Integer addFigure(String name, int price)
+    /*
+     * add a figure
+     * @param: f-Figure
+     * */
+    public Integer addFigure(Figure f)
     {
         Session session = sessionFactory.openSession();
         Transaction tx = null;
         Integer figureId = null;
+        String name = f.getName();
+        int price = f.getPrice();
         
-        try
+        if (name != null && price != 0)
         {
-            tx = session.beginTransaction();
-            Figure1 figure = new Figure1(name, price);
-            figureId = (Integer) session.save(figure);
-            tx.commit();
-        }
-        catch (HibernateException he)
-        {
-            if (tx != null) tx.rollback();
-            he.printStackTrace();
-        }
-        finally
-        {
-            session.close();
-        }
+            try
+            {
+                tx = session.beginTransaction();
+                
+                Figure figure = new Figure(name, price);
+                figureId = (Integer) session.save(figure);
+                tx.commit();
+            }
+            catch (HibernateException he)
+            {
+                if (tx != null) tx.rollback();
+                he.printStackTrace();
+            }
+            finally
+            {
+                session.close();
+            }
+        }        
         
         return figureId;
     }
-    
     
     
     /*
@@ -78,5 +86,102 @@ public class FigureDAOImpl implements FigureDAO
             he.printStackTrace();
             return null;
         }
+        finally
+        {
+            session.close();
+        }
     }
+    
+    
+    /*
+     * update a figure with id = json id in request
+     * @param: f-Figure
+     * */
+    public void updateFigure(Figure f)
+    {
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        Integer figureId = f.getId();
+        String name = f.getName();
+        int price = f.getPrice();
+        
+        try
+        {
+            tx = session.beginTransaction();
+            Figure figure = session.get(Figure.class, figureId);
+            figure.setName(name);
+            figure.setPrice(price);
+            tx.commit();
+        }
+        catch (HibernateException he)
+        {
+            if (tx != null)
+                tx.rollback();
+            he.printStackTrace();
+        }
+        finally
+        {
+            session.close();
+        }
+    }
+
+
+    /*
+     * remove a figure with input id
+     * */
+    public void removeFigure(Integer id)
+    {
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        
+        try
+        {
+            tx = session.beginTransaction();
+            Figure figure = session.get(Figure.class, id);
+            session.delete(figure);
+            tx.commit();
+        }
+        catch (HibernateException he)
+        {
+            if (tx != null)
+                tx.rollback();
+            he.printStackTrace();
+        }
+        finally
+        {
+            session.close();
+        }
+    }
+    
+    
+    /*
+     * get figure by id
+     * */
+    public Figure getFigureById(Integer id)
+    {
+
+        Session session = sessionFactory.openSession();
+        Transaction tx = null;
+        Figure figure = new Figure();
+        
+        try 
+        {
+            tx = session.beginTransaction();
+            figure = session.get(Figure.class, id);
+            tx.commit();
+        }
+        catch (HibernateException he)
+        {
+            if (tx != null)
+                tx.rollback();
+            he.printStackTrace();
+        }
+        finally
+        {
+            session.close();
+        }
+        
+        return figure;
+    }
+
 }

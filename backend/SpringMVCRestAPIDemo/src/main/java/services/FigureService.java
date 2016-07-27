@@ -6,6 +6,9 @@ import models.Figure;
 
 public interface FigureService
 {
-    public Integer addFigure(String name, int price);
+    public Integer addFigure(Figure f);
     public List<Figure> listFigure();
+    public void updateFigure(Figure f);
+    public Figure getFigureById(Integer id);
+    public void removeFigure(Integer id);
 }

@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import models.Figure;
 import models.Figure1;
 
 public class ManageFigure
@@ -21,7 +22,6 @@ public class ManageFigure
         try
         {
             factory = new Configuration().configure().buildSessionFactory();
-            System.out.println("configure session success");
         }
         catch (Throwable ex)
         {
@@ -32,7 +32,9 @@ public class ManageFigure
         
         
         //add imployee
-       Integer figureId1 = MF.addFigure("siki", 11);
+       Integer figureId1 = MF.addFigure("okai", 45);
+       MF.getFigureById(28);
+//       MF.updateFigure(1, "puj", 200);
        
        MF.listAllFigure();
 
@@ -46,6 +48,11 @@ public class ManageFigure
         
     }
     
+    
+    /*
+     * Add new figure
+     * @Para: name-string, price-int
+     * */
     public Integer addFigure(String name, int price)
     {
         Session session = factory.openSession();
@@ -72,6 +79,37 @@ public class ManageFigure
         return figureId;
     }
     
+    
+    /*
+     * Update a figure
+     * @param: name-string, price-int
+     * */
+    public void updateFigure(Integer fId, String name, int price)
+    {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        
+        try
+        {
+            tx = session.beginTransaction();
+            Figure1 figure = session.get(Figure1.class, fId);
+            figure.setName(name);
+            figure.setPrice(price);
+            tx.commit();
+        }
+        catch (HibernateException he)
+        {
+            if (tx != null)
+                tx.rollback();
+            he.printStackTrace();
+        }
+        finally
+        {
+            session.close();
+        }
+    }
+    
+    
     /*
      * list all figure
      * */
@@ -86,11 +124,7 @@ public class ManageFigure
             tx = session.beginTransaction();
             String hql = "FROM Figure1";
             Query query = session.createQuery(hql);
-    //        List figures = session.createQuery(hql).list();
-   //         query.setParameter("id", id);
             List figures = query.list();
-            
-            System.out.println(figures);
             
             for (Iterator iterator = figures.iterator(); iterator.hasNext();)
             {
@@ -112,5 +146,76 @@ public class ManageFigure
             session.close();
         }
         
+    }
+
+    
+    /*
+     * remove a figure with input id
+     * */
+    public void removeFigure(Integer id)
+    {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        
+        try
+        {
+            tx = session.beginTransaction();
+            Figure1 figure = session.get(Figure1.class, id);
+            if (figure != null)
+            {
+                session.delete(figure);
+                tx.commit();
+            }
+            else
+            {
+                System.out.println("********************************\n\tid not found\n********************************");
+            }
+            
+        }
+        catch (HibernateException he)
+        {
+            if (tx != null)
+                tx.rollback();
+            he.printStackTrace();
+        }
+        finally
+        {
+            session.close();
+        }
+    }
+
+
+    public Figure1 getFigureById(Integer id)
+    {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        Figure1 figure = new Figure1();
+        
+        try 
+        {
+            tx = session.beginTransaction();
+            figure = session.load(Figure1.class, id);
+           
+            if (figure != null)
+            {
+                System.out.println("got it");
+                System.out.print("id: " + figure.getId());
+                System.out.print("\tname: " + figure.getName());
+                System.out.println("\tprice: " + figure.getPrice() + "$");
+            }
+            tx.commit();
+        }
+        catch (HibernateException he)
+        {
+            if (tx != null)
+                tx.rollback();
+            he.printStackTrace();
+        }
+        finally
+        {
+            session.close();
+        }
+        
+        return figure;
     }
 }

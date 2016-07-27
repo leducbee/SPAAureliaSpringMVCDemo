@@ -17,15 +17,19 @@ public class FigureServiceImpl implements FigureService
         this.figureDAO = figureDAO;
     }
     
-    
-    public Integer addFigure(String name, int price)
+    /*
+     * service add figure: implement service interface - add service
+     * */
+    @Transactional
+    public Integer addFigure(Figure f)
     {
-        return this.figureDAO.addFigure(name, price);
+        return this.figureDAO.addFigure(f);
     }
     
     
     /*
      * implement figure service: list all figure object in database
+     * implement service interface - listFigure
      * 
      * */
     @Transactional
@@ -34,4 +38,36 @@ public class FigureServiceImpl implements FigureService
         return this.figureDAO.listFigure();
     }
 
+    
+    /*
+     * service update figure
+     * implement service interface - updateFigure
+     * */
+    @Transactional
+    public void updateFigure(Figure f)
+    {
+        this.figureDAO.updateFigure(f);
+    }
+    
+    
+    /*
+     *service remove a figure with id
+     *implement service interface - removeFigure 
+     * */
+    @Transactional
+    public void removeFigure(Integer id)
+    {
+        this.figureDAO.removeFigure(id);
+    }
+
+
+    /*
+     * service get figure by id
+     * implement service interface - getFigureById
+     * */
+    @Transactional
+    public Figure getFigureById(Integer id)
+    {
+        return this.figureDAO.getFigureById(id);
+    }
 }
